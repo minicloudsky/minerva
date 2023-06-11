@@ -27,6 +27,15 @@ paths:
                                 $ref: '#/components/schemas/minerva.v1.ParseSqlTypeReply'
 components:
     schemas:
+        minerva.v1.Data_SqlTypes:
+            type: object
+            properties:
+                sql:
+                    type: string
+                sqlType:
+                    type: array
+                    items:
+                        type: string
         minerva.v1.ParseSqlTypeReply:
             type: object
             properties:
@@ -40,12 +49,10 @@ components:
         minerva.v1.ParseSqlTypeReply_Data:
             type: object
             properties:
-                sql:
-                    type: string
-                sqlType:
+                sqlTypes:
                     type: array
                     items:
-                        type: string
+                        $ref: '#/components/schemas/minerva.v1.Data_SqlTypes'
         minerva.v1.ParseSqlTypeRequest:
             type: object
             properties:

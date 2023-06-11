@@ -5,6 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"minerva/internal/biz"
 	"minerva/internal/pkg/sqlparser"
+	"strings"
 )
 
 type minervaRepo struct {
@@ -13,7 +14,9 @@ type minervaRepo struct {
 }
 
 func (r *minervaRepo) ParseSqlType(ctx context.Context, sql string) (sqlType []biz.SqlTypeItem, err error) {
-	sqlTypes := sqlparser.ParseSqlType([]string{sql})
+	sql = strings.TrimSpace(sql)
+	sqls := strings.Split(sql, ";")
+	sqlTypes := sqlparser.ParseSqlType(sqls)
 	return sqlTypes, nil
 }
 

@@ -1,6 +1,6 @@
 # Minerva
 
-Minerva is a DDL SQL type detection tool based on TiDB parser, which automatically identifies SQL types such as creating tables, modifying table fields, adding indexes, deleting indexes, and modifying tables. It can be used in scenarios such as DDL SQL risk assessment.
+Minerva is a SQL type detection tool based on TiDB parser, which automatically identifies SQL types such as creating tables, modifying table fields, adding indexes, deleting indexes, and modifying tables. It can be used in scenarios such as SQL risk assessment.
 > Minerva, also known as Athena in Roman mythology, in Greek mythology, was the goddess of wisdom, strategy, and war. She was the daughter of Zeus and the Roman version of the goddess of war, Pallas Athena. Minerva is often depicted as a female warrior wearing a golden helmet and carrying a spear and shield. In addition to planning strategies for war, Minerva was considered the guardian of culture, she presided over medicine, poetry, weaving, and music. During the Roman Empire, Minerva was widely worshipped and her temples and statues were built in many cities and regions.
 
 

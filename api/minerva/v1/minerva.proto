@@ -26,8 +26,11 @@ message ParseSqlTypeRequest {
 
 message ParseSqlTypeReply {
   message Data {
-    string sql = 1;
-    repeated string sql_type = 2;
+    message SqlTypes {
+      string sql = 1;
+      repeated string sql_type = 2;
+    }
+    repeated SqlTypes sql_types = 1;
   }
   int32 code = 1;
   string message = 2;

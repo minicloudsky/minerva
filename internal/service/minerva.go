@@ -26,39 +26,28 @@ func (s *MinervaService) ParseSqlType(ctx context.Context, in *v1.ParseSqlTypeRe
 		return &v1.ParseSqlTypeReply{
 			Code:    ErrorCode,
 			Message: err.Error(),
-			Data: &v1.ParseSqlTypeReply_Data{
-				Sql:     "",
-				SqlType: nil,
-			},
+			Data:    &v1.ParseSqlTypeReply_Data{SqlTypes: nil},
 		}, err
 	}
 	sqlTypeItems, err := s.uc.ParseSqlType(ctx, in.Sql)
+	types := make([]*v1.ParseSqlTypeReply_Data_SqlTypes, 0)
+	for _, item := range sqlTypeItems {
+		types = append(types, &v1.ParseSqlTypeReply_Data_SqlTypes{
+			Sql:     item.Sql,
+			SqlType: item.Type,
+		})
+	}
 	if err != nil {
 		return &v1.ParseSqlTypeReply{
 			Code:    ErrorCode,
 			Message: err.Error(),
-			Data: &v1.ParseSqlTypeReply_Data{
-				Sql:     in.Sql,
-				SqlType: sqlTypeItems[0].Type,
-			},
+			Data:    &v1.ParseSqlTypeReply_Data{SqlTypes: types},
 		}, err
 	}
-	if len(sqlTypeItems) >= 1 {
-		return &v1.ParseSqlTypeReply{
-			Code:    SuccessCode,
-			Message: "OK",
-			Data: &v1.ParseSqlTypeReply_Data{
-				Sql:     in.Sql,
-				SqlType: sqlTypeItems[0].Type,
-			},
-		}, nil
-	}
+
 	return &v1.ParseSqlTypeReply{
 		Code:    SuccessCode,
 		Message: "OK",
-		Data: &v1.ParseSqlTypeReply_Data{
-			Sql:     in.Sql,
-			SqlType: nil,
-		},
+		Data:    &v1.ParseSqlTypeReply_Data{SqlTypes: types},
 	}, nil
 }

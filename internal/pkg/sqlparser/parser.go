@@ -37,6 +37,11 @@ const DdlTypeDropIndex = "drop index"
 // DdlTypePartition DdlTypePartitionTable table partition
 const DdlTypePartition = "partition"
 
+const SelectType = "select"
+const DMLTypeInsert = "insert"
+const DMLTypeUpdate = "update"
+const DMLTypeDelete = "delete"
+
 // DdlTypeUnknown unknown ddl
 const DdlTypeUnknown = "unknown"
 
@@ -131,6 +136,14 @@ func ParseSqlType(sqls []string) (sqlTypes []biz.SqlTypeItem) {
 				}
 			case *ast.CreateDatabaseStmt:
 				sqlTypeMap[sql] = append(sqlTypeMap[sql], DdlTypeCreateDatabase)
+			case *ast.SelectStmt:
+				sqlTypeMap[sql] = append(sqlTypeMap[sql], SelectType)
+			case *ast.InsertStmt:
+				sqlTypeMap[sql] = append(sqlTypeMap[sql], DMLTypeInsert)
+			case *ast.UpdateStmt:
+				sqlTypeMap[sql] = append(sqlTypeMap[sql], DMLTypeUpdate)
+			case *ast.DeleteStmt:
+				sqlTypeMap[sql] = append(sqlTypeMap[sql], DMLTypeDelete)
 			default:
 				if len(sqlTypeMap[sql]) == 0 {
 					sqlTypeMap[sql] = append(sqlTypeMap[sql], DdlTypeUnknown)
