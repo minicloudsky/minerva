@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MineRvaClient is the client API for MineRva service.
+// MinervaClient is the client API for Minerva service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MineRvaClient interface {
+type MinervaClient interface {
 	ParseSqlType(ctx context.Context, in *ParseSqlTypeRequest, opts ...grpc.CallOption) (*ParseSqlTypeReply, error)
 }
 
-type mineRvaClient struct {
+type minervaClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMineRvaClient(cc grpc.ClientConnInterface) MineRvaClient {
-	return &mineRvaClient{cc}
+func NewMinervaClient(cc grpc.ClientConnInterface) MinervaClient {
+	return &minervaClient{cc}
 }
 
-func (c *mineRvaClient) ParseSqlType(ctx context.Context, in *ParseSqlTypeRequest, opts ...grpc.CallOption) (*ParseSqlTypeReply, error) {
+func (c *minervaClient) ParseSqlType(ctx context.Context, in *ParseSqlTypeRequest, opts ...grpc.CallOption) (*ParseSqlTypeReply, error) {
 	out := new(ParseSqlTypeReply)
-	err := c.cc.Invoke(ctx, "/minerva.v1.MineRva/ParseSqlType", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/minerva.v1.Minerva/ParseSqlType", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MineRvaServer is the server API for MineRva service.
-// All implementations must embed UnimplementedMineRvaServer
+// MinervaServer is the server API for Minerva service.
+// All implementations must embed UnimplementedMinervaServer
 // for forward compatibility
-type MineRvaServer interface {
+type MinervaServer interface {
 	ParseSqlType(context.Context, *ParseSqlTypeRequest) (*ParseSqlTypeReply, error)
-	mustEmbedUnimplementedMineRvaServer()
+	mustEmbedUnimplementedMinervaServer()
 }
 
-// UnimplementedMineRvaServer must be embedded to have forward compatible implementations.
-type UnimplementedMineRvaServer struct {
+// UnimplementedMinervaServer must be embedded to have forward compatible implementations.
+type UnimplementedMinervaServer struct {
 }
 
-func (UnimplementedMineRvaServer) ParseSqlType(context.Context, *ParseSqlTypeRequest) (*ParseSqlTypeReply, error) {
+func (UnimplementedMinervaServer) ParseSqlType(context.Context, *ParseSqlTypeRequest) (*ParseSqlTypeReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ParseSqlType not implemented")
 }
-func (UnimplementedMineRvaServer) mustEmbedUnimplementedMineRvaServer() {}
+func (UnimplementedMinervaServer) mustEmbedUnimplementedMinervaServer() {}
 
-// UnsafeMineRvaServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MineRvaServer will
+// UnsafeMinervaServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MinervaServer will
 // result in compilation errors.
-type UnsafeMineRvaServer interface {
-	mustEmbedUnimplementedMineRvaServer()
+type UnsafeMinervaServer interface {
+	mustEmbedUnimplementedMinervaServer()
 }
 
-func RegisterMineRvaServer(s grpc.ServiceRegistrar, srv MineRvaServer) {
-	s.RegisterService(&MineRva_ServiceDesc, srv)
+func RegisterMinervaServer(s grpc.ServiceRegistrar, srv MinervaServer) {
+	s.RegisterService(&Minerva_ServiceDesc, srv)
 }
 
-func _MineRva_ParseSqlType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Minerva_ParseSqlType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ParseSqlTypeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MineRvaServer).ParseSqlType(ctx, in)
+		return srv.(MinervaServer).ParseSqlType(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/minerva.v1.MineRva/ParseSqlType",
+		FullMethod: "/minerva.v1.Minerva/ParseSqlType",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MineRvaServer).ParseSqlType(ctx, req.(*ParseSqlTypeRequest))
+		return srv.(MinervaServer).ParseSqlType(ctx, req.(*ParseSqlTypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// MineRva_ServiceDesc is the grpc.ServiceDesc for MineRva service.
+// Minerva_ServiceDesc is the grpc.ServiceDesc for Minerva service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var MineRva_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "minerva.v1.MineRva",
-	HandlerType: (*MineRvaServer)(nil),
+var Minerva_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "minerva.v1.Minerva",
+	HandlerType: (*MinervaServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ParseSqlType",
-			Handler:    _MineRva_ParseSqlType_Handler,
+			Handler:    _Minerva_ParseSqlType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

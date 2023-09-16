@@ -27,6 +27,6 @@ func NewGRPCServer(c *conf.Server, s *service.MinervaService, logger log.Logger)
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterMineRvaServer(srv, s)
+	v1.RegisterMinervaServer(srv, s)
 	return srv
 }

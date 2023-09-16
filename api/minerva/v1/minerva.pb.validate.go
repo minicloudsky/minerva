@@ -174,33 +174,38 @@ func (m *ParseSqlTypeReply) validate(all bool) error {
 
 	// no validation rules for Message
 
-	if all {
-		switch v := interface{}(m.GetData()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ParseSqlTypeReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ParseSqlTypeReplyValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ParseSqlTypeReplyValidationError{
+						field:  fmt.Sprintf("Data[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ParseSqlTypeReplyValidationError{
-					field:  "Data",
+				return ParseSqlTypeReplyValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ParseSqlTypeReplyValidationError{
-				field:  "Data",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -283,22 +288,23 @@ var _ interface {
 	ErrorName() string
 } = ParseSqlTypeReplyValidationError{}
 
-// Validate checks the field values on ParseSqlTypeReply_Data with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ParseSqlTypeReply_Data) Validate() error {
+// Validate checks the field values on ParseSqlTypeReply_SqlCheckResult with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ParseSqlTypeReply_SqlCheckResult) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ParseSqlTypeReply_Data with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ParseSqlTypeReply_DataMultiError, or nil if none found.
-func (m *ParseSqlTypeReply_Data) ValidateAll() error {
+// ValidateAll checks the field values on ParseSqlTypeReply_SqlCheckResult with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ParseSqlTypeReply_SqlCheckResultMultiError, or nil if none found.
+func (m *ParseSqlTypeReply_SqlCheckResult) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ParseSqlTypeReply_Data) validate(all bool) error {
+func (m *ParseSqlTypeReply_SqlCheckResult) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -307,20 +313,23 @@ func (m *ParseSqlTypeReply_Data) validate(all bool) error {
 
 	// no validation rules for Sql
 
+	// no validation rules for Risk
+
 	if len(errors) > 0 {
-		return ParseSqlTypeReply_DataMultiError(errors)
+		return ParseSqlTypeReply_SqlCheckResultMultiError(errors)
 	}
 
 	return nil
 }
 
-// ParseSqlTypeReply_DataMultiError is an error wrapping multiple validation
-// errors returned by ParseSqlTypeReply_Data.ValidateAll() if the designated
+// ParseSqlTypeReply_SqlCheckResultMultiError is an error wrapping multiple
+// validation errors returned by
+// ParseSqlTypeReply_SqlCheckResult.ValidateAll() if the designated
 // constraints aren't met.
-type ParseSqlTypeReply_DataMultiError []error
+type ParseSqlTypeReply_SqlCheckResultMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ParseSqlTypeReply_DataMultiError) Error() string {
+func (m ParseSqlTypeReply_SqlCheckResultMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -329,11 +338,12 @@ func (m ParseSqlTypeReply_DataMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ParseSqlTypeReply_DataMultiError) AllErrors() []error { return m }
+func (m ParseSqlTypeReply_SqlCheckResultMultiError) AllErrors() []error { return m }
 
-// ParseSqlTypeReply_DataValidationError is the validation error returned by
-// ParseSqlTypeReply_Data.Validate if the designated constraints aren't met.
-type ParseSqlTypeReply_DataValidationError struct {
+// ParseSqlTypeReply_SqlCheckResultValidationError is the validation error
+// returned by ParseSqlTypeReply_SqlCheckResult.Validate if the designated
+// constraints aren't met.
+type ParseSqlTypeReply_SqlCheckResultValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -341,24 +351,24 @@ type ParseSqlTypeReply_DataValidationError struct {
 }
 
 // Field function returns field value.
-func (e ParseSqlTypeReply_DataValidationError) Field() string { return e.field }
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ParseSqlTypeReply_DataValidationError) Reason() string { return e.reason }
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ParseSqlTypeReply_DataValidationError) Cause() error { return e.cause }
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ParseSqlTypeReply_DataValidationError) Key() bool { return e.key }
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ParseSqlTypeReply_DataValidationError) ErrorName() string {
-	return "ParseSqlTypeReply_DataValidationError"
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) ErrorName() string {
+	return "ParseSqlTypeReply_SqlCheckResultValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ParseSqlTypeReply_DataValidationError) Error() string {
+func (e ParseSqlTypeReply_SqlCheckResultValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -370,14 +380,14 @@ func (e ParseSqlTypeReply_DataValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sParseSqlTypeReply_Data.%s: %s%s",
+		"invalid %sParseSqlTypeReply_SqlCheckResult.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ParseSqlTypeReply_DataValidationError{}
+var _ error = ParseSqlTypeReply_SqlCheckResultValidationError{}
 
 var _ interface {
 	Field() string
@@ -385,4 +395,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ParseSqlTypeReply_DataValidationError{}
+} = ParseSqlTypeReply_SqlCheckResultValidationError{}

@@ -11,7 +11,7 @@ option java_package = "minerva.v1";
 option java_outer_classname = "MinervaProtoV1";
 
 // The minerva service definition.
-service MineRva {
+service Minerva {
   rpc ParseSqlType(ParseSqlTypeRequest) returns (ParseSqlTypeReply) {
     option (google.api.http) = {
       post: "/minerva/auditSqlType"
@@ -25,15 +25,12 @@ message ParseSqlTypeRequest {
 }
 
 message ParseSqlTypeReply {
-  message Data {
-    message SqlTypes {
-      string sql = 1;
-      repeated string sql_type = 2;
-      string risk = 3;
-    }
-    repeated SqlTypes sql_types = 1;
+  message SqlCheckResult {
+    string sql = 1;
+    repeated string sql_type = 2;
+    string risk = 3;
   }
   int32 code = 1;
   string message = 2;
-  Data data = 3;
+  repeated SqlCheckResult data = 3;
 }

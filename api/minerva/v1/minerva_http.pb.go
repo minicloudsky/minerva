@@ -19,24 +19,24 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationMineRvaParseSqlType = "/minerva.v1.MineRva/ParseSqlType"
+const OperationMinervaParseSqlType = "/minerva.v1.Minerva/ParseSqlType"
 
-type MineRvaHTTPServer interface {
+type MinervaHTTPServer interface {
 	ParseSqlType(context.Context, *ParseSqlTypeRequest) (*ParseSqlTypeReply, error)
 }
 
-func RegisterMineRvaHTTPServer(s *http.Server, srv MineRvaHTTPServer) {
+func RegisterMinervaHTTPServer(s *http.Server, srv MinervaHTTPServer) {
 	r := s.Route("/")
-	r.POST("/minerva/auditSqlType", _MineRva_ParseSqlType0_HTTP_Handler(srv))
+	r.POST("/minerva/auditSqlType", _Minerva_ParseSqlType0_HTTP_Handler(srv))
 }
 
-func _MineRva_ParseSqlType0_HTTP_Handler(srv MineRvaHTTPServer) func(ctx http.Context) error {
+func _Minerva_ParseSqlType0_HTTP_Handler(srv MinervaHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ParseSqlTypeRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationMineRvaParseSqlType)
+		http.SetOperation(ctx, OperationMinervaParseSqlType)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ParseSqlType(ctx, req.(*ParseSqlTypeRequest))
 		})
@@ -49,23 +49,23 @@ func _MineRva_ParseSqlType0_HTTP_Handler(srv MineRvaHTTPServer) func(ctx http.Co
 	}
 }
 
-type MineRvaHTTPClient interface {
+type MinervaHTTPClient interface {
 	ParseSqlType(ctx context.Context, req *ParseSqlTypeRequest, opts ...http.CallOption) (rsp *ParseSqlTypeReply, err error)
 }
 
-type MineRvaHTTPClientImpl struct {
+type MinervaHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewMineRvaHTTPClient(client *http.Client) MineRvaHTTPClient {
-	return &MineRvaHTTPClientImpl{client}
+func NewMinervaHTTPClient(client *http.Client) MinervaHTTPClient {
+	return &MinervaHTTPClientImpl{client}
 }
 
-func (c *MineRvaHTTPClientImpl) ParseSqlType(ctx context.Context, in *ParseSqlTypeRequest, opts ...http.CallOption) (*ParseSqlTypeReply, error) {
+func (c *MinervaHTTPClientImpl) ParseSqlType(ctx context.Context, in *ParseSqlTypeRequest, opts ...http.CallOption) (*ParseSqlTypeReply, error) {
 	var out ParseSqlTypeReply
 	pattern := "/minerva/auditSqlType"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationMineRvaParseSqlType))
+	opts = append(opts, http.Operation(OperationMinervaParseSqlType))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

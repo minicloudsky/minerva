@@ -10,21 +10,47 @@ Minerva is a SQL type detection tool based on TiDB parser, which automatically i
 docker run -p 8088:8088 -p 9000:9000 --name minerva -d littlecloudsky/minerva
 ```
 
-### Check a sql's type
+### Check a sql's type and risk level
 ```shell
-curl --location --request POST 'http://127.0.0.1:8000/minerva/parse-sql-type' \
+curl --location --request POST 'http://127.0.0.1:8088/minerva/parse-sql-type' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "sql": "alter table t_user modify username varchar(64) default '\'''\'''' not null comment '\''username'\'';"
+    "sql": "insert into user(`name`, `city`,sex) values('apple','tokyo',0);update user set sex=0,city='tokyo' where username in ('sudo','ping','telnet');delete from user where name ='sunny' and sex=0;alter table t_user modify username varchar(64) default '' not null comment 'username';"
 }'
 
 {
-    "code": 200,
+    "code": 0,
     "message": "OK",
     "data": {
-        "sql": "alter table t_user modify username varchar(64) default '' not null comment 'username';",
-        "sqlType": [
-            "modify column"
+        "sqlTypes": [
+            {
+                "sql": "delete from user where name ='sunny' and sex=0",
+                "sqlType": [
+                    "Delete"
+                ],
+                "risk": "Low"
+            },
+            {
+                "sql": "alter table t_user modify username varchar(64) default '' not null comment 'username'",
+                "sqlType": [
+                    "ModifyColumn"
+                ],
+                "risk": "Medium"
+            },
+            {
+                "sql": "insert into user(`name`, `city`,sex) values('apple','tokyo',0)",
+                "sqlType": [
+                    "Insert"
+                ],
+                "risk": "Low"
+            },
+            {
+                "sql": "update user set sex=0,city='tokyo' where username in ('sudo','ping','telnet')",
+                "sqlType": [
+                    "Update"
+                ],
+                "risk": "Low"
+            }
         ]
     }
 }

@@ -27,6 +27,6 @@ func NewHTTPServer(c *conf.Server, s *service.MinervaService, logger log.Logger)
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterMineRvaHTTPServer(srv, s)
+	v1.RegisterMinervaHTTPServer(srv, s)
 	return srv
 }

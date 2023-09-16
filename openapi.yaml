@@ -3,15 +3,15 @@
 
 openapi: 3.0.3
 info:
-    title: MineRva API
+    title: Minerva API
     description: The minerva service definition.
     version: 0.0.1
 paths:
     /minerva/auditSqlType:
         post:
             tags:
-                - MineRva
-            operationId: MineRva_ParseSqlType
+                - Minerva
+            operationId: Minerva_ParseSqlType
             requestBody:
                 content:
                     application/json:
@@ -27,7 +27,19 @@ paths:
                                 $ref: '#/components/schemas/minerva.v1.ParseSqlTypeReply'
 components:
     schemas:
-        minerva.v1.Data_SqlTypes:
+        minerva.v1.ParseSqlTypeReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/minerva.v1.ParseSqlTypeReply_SqlCheckResult'
+        minerva.v1.ParseSqlTypeReply_SqlCheckResult:
             type: object
             properties:
                 sql:
@@ -38,27 +50,10 @@ components:
                         type: string
                 risk:
                     type: string
-        minerva.v1.ParseSqlTypeReply:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    format: int32
-                message:
-                    type: string
-                data:
-                    $ref: '#/components/schemas/minerva.v1.ParseSqlTypeReply_Data'
-        minerva.v1.ParseSqlTypeReply_Data:
-            type: object
-            properties:
-                sqlTypes:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/minerva.v1.Data_SqlTypes'
         minerva.v1.ParseSqlTypeRequest:
             type: object
             properties:
                 sql:
                     type: string
 tags:
-    - name: MineRva
+    - name: Minerva
