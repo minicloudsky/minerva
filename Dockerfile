@@ -1,4 +1,10 @@
 FROM golang:1.21 AS builder
+LABEL maintainer="minicloudsky <minicloudsky@gmail.com>"
+
+ENV CGO_ENABLED=0
+ENV GOPROXY=https://goproxy.cn,https://goproxy.io,direct
+ENV GOARCH=amd64
+ENV GOOS=linux
 
 COPY . /src
 RUN mkdir -p   /data/conf
