@@ -82,6 +82,7 @@ func main() {
 
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
+		log.NewHelper(logger).Error("fail to run app! err: %v", err)
 		panic(err)
 	}
 }
